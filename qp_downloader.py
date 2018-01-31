@@ -5,7 +5,14 @@ from download import *
 os.system('cls')
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-
+print('____________________________________________________________________________________________________')
+print('|***************************************    QP DOWNLOADER    ***************************************|')
+print('|******************** Download previous years question of IGNOU BCA/MCA courses ********************|')
+print('|                                                                                                   |')
+print('|************************************ Created by Samiran Kakoty ************************************|')
+print('|******************** Get Source at: https://github.com/samirank/qp_downloader *********************|')
+print('|___________________________________________________________________________________________________|')
+print('\n\n\n\n')
 
 course_code = input("Enter course code (Enter one or multiple course seperated by space \' \'): \n")
 course_code = course_code.split(' ')
