@@ -30,6 +30,11 @@ A Python tool to download previous year question papers for IGNOU (Indira Gandhi
    ```bash
    pip install -r requirements.txt
    ```
+   
+   **Alternative installation** (install as a package):
+   ```bash
+   pip install -e .
+   ```
 
 ## 📦 Dependencies
 
@@ -73,6 +78,7 @@ Common IGNOU course codes:
 qp_downloader/
 ├── README.md              # This file
 ├── requirements.txt       # Python dependencies
+├── setup.py              # Package installation script
 ├── qp_downloader.py      # Main entry point
 ├── download.py           # Core download functionality
 ├── progress.py           # Progress bar utility
