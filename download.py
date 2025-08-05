@@ -1,51 +1,33 @@
-import os.path 						#to find absolute path
-import pathlib						#create directory
+"""
+Core download functionality for IGNOU Question Paper Downloader
+"""
+
+import os.path
+import pathlib
 import re 
-import urllib3						#to send http request and get file data
-from bs4 import BeautifulSoup		#beautifulsoup to parse html
+import urllib3
+from bs4 import BeautifulSoup
 import sys
 from progress import progress
-
-
-
-
-def get_range(val):
-	if val == 'year':
-		year_range = ["2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018"]
-		return year_range
-	if val == 'month':
-		months_range = ['June','December']
-		return months_range
-	else:
-		print('incorrect request format')
-		return False
+from config import SUPPORTED_YEARS, SUPPORTED_MONTHS, BASE_URL, REQUEST_TIMEOUT, ERROR_MESSAGES
+from utils import get_range, get_file_year, get_file_month, print_error, sanitize_filename, ensure_directory, get_unique_filename
 
 
 
 
 
-def get_file_year(val):
-	for year in get_range('year'):
-		if re.search(year, val, re.IGNORECASE):
-			return year
-	return False
-def get_file_month(val):
-	for month in get_range('month'):
-		if re.search(month, val, re.IGNORECASE):
-			return month
-		if re.search('dec', val, re.IGNORECASE):
-			return 'December'
-	return False
 
 
 
 
 
-def print_error(val):
-	if val == -1:
-		return 'unable to connect'
-	if val == -2:
-		return 'connection timed out'
+
+
+
+
+
+
+
 
 
 

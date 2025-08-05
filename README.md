@@ -76,19 +76,21 @@ qp_downloader/
 ├── qp_downloader.py      # Main entry point
 ├── download.py           # Core download functionality
 ├── progress.py           # Progress bar utility
+├── config.py             # Configuration settings
+├── utils.py              # Utility functions
 ├── .gitignore           # Git ignore file
 └── LICENSE              # MIT License
 ```
 
 ## 🔧 Configuration
 
-You can customize the tool by modifying the source code:
+You can customize the tool by modifying `config.py`:
 
-- **Year Range**: Modify the `get_range()` function in `download.py` to change supported years
-- **Session Types**: Update the months list in `download.py` to add/remove session types
-- **School Codes**: Change the default school code in `qp_downloader.py`
-- **Download Path**: Modify the path variable in `download.py`
-- **Timeout Settings**: Adjust network timeouts in the `get_html()` function
+- **Year Range**: Modify `SUPPORTED_YEARS` to change supported years
+- **Session Types**: Update `SUPPORTED_MONTHS` to add/remove session types
+- **School Codes**: Change `DEFAULT_SCHOOL_CODE` to use different school
+- **Download Path**: Set `DEFAULT_DOWNLOAD_PATH` for custom download directory
+- **Timeout Settings**: Adjust `REQUEST_TIMEOUT` for network timeouts
 
 ## 🐛 Troubleshooting
 
