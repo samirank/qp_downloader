@@ -41,8 +41,10 @@ A Python tool to download previous year question papers for IGNOU (Indira Gandhi
 The following packages are required:
 - `urllib3` - HTTP client for downloading files
 - `beautifulsoup4` - HTML parsing
-- `PyPDF2` - PDF manipulation and merging
+- `PyPDF2` - PDF manipulation and merging (not `py2pdf`)
 - `pathlib` - Path operations (included in Python 3.4+)
+
+**Note**: This project uses `PyPDF2`, not `py2pdf`. Make sure to install the correct package.
 
 ## 🎯 Usage
 

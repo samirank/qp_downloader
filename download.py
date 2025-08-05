@@ -152,6 +152,16 @@ def get_course_link(course_code, program_links):
 	return course_links
 
 def download_files(course_links, course_code):
+	"""
+	Download files from course links with proper error handling and file management.
+	
+	Args:
+		course_links: List of URLs to download from
+		course_code: Course code for organizing files
+		
+	Returns:
+		List of local file paths
+	"""
 	local_file_path = []
 	path = course_code
 	total = len(course_links)
@@ -160,42 +170,45 @@ def download_files(course_links, course_code):
 	msg='downloading.... '+str(i)+'/'+str(total)+' of '+str(total)+' files'
 	i+=1
 	
+	# Ensure directory exists
+	ensure_directory(path)
+	
 	for url in course_links:
-		filename = url.rsplit('/',1)
-		filename = filename[1].rsplit('.',1)
-		j=0
-		while os.path.exists(path+'\\'+filename[0]+'.'+filename[1]):
-			filename[0]=filename[0].rsplit('_',1)
-			filename[0]=filename[0][0]
-			filename[0]+='_'+str(j)
-			j+=1
-		filename=filename[0]+'.'+filename[1]
-
+		# Extract filename from URL
+		filename = url.rsplit('/',1)[1]
+		name, ext = filename.rsplit('.',1)
+		
+		# Get unique filename to avoid conflicts
+		unique_filename = get_unique_filename(path, filename)
+		
+		# Add month and year prefixes
 		for month in get_range('month'):
 			if re.search(month, url, re.IGNORECASE):
-				filename =month+'_'+filename
+				unique_filename = month + '_' + unique_filename
 		for year in get_range('year'):
 			if re.search(year, url, re.IGNORECASE):
-				filename =year+'_'+filename
+				unique_filename = year + '_' + unique_filename
 
-		pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+		# Sanitize filename for filesystem safety
+		safe_filename = sanitize_filename(unique_filename)
+		file_path = os.path.join(path, safe_filename)
 
 		http = urllib3.PoolManager()
 		try:
-		    response = http.request('GET', url, preload_content=False, retries=False, timeout=10.0)
+		    response = http.request('GET', url, preload_content=False, retries=False, timeout=REQUEST_TIMEOUT)
 		except urllib3.exceptions.NewConnectionError:
 			msg='Connection failed for url: '+url
 		except urllib3.exceptions.TimeoutError:
 			msg='Connection timed out for url: '+url
 		else:
-			with open(path+'\\'+filename, 'wb') as out:
+			with open(file_path, 'wb') as out:
 				while True:
 					data = response.read(100)
 					if not data:
 						break
 					out.write(data)
 				out.close()
-				local_file_path.append(path+'\\'+filename)
+				local_file_path.append(file_path)
 		response.release_conn()
 		msg='downloaded '+str(i)+'/'+str(total)+' of '+str(total)+' files'
 		progress(i, total, status=msg)
@@ -203,6 +216,13 @@ def download_files(course_links, course_code):
 	return local_file_path
 
 def merge(pdfs, course_code):
+	"""
+	Merge multiple PDF files into a single file.
+	
+	Args:
+		pdfs: List of PDF file paths to merge
+		course_code: Course code for naming the merged file
+	"""
 	print('\n')
 	progress(0, 1, status='merging '+course_code)
 	from PyPDF2 import PdfFileMerger
@@ -210,6 +230,10 @@ def merge(pdfs, course_code):
 
 	for pdf in pdfs:
 	    merger.append(pdf)
-	merger.write(course_code+'\\'+'merged.pdf')
+	
+	# Use os.path.join for cross-platform compatibility
+	merged_file_path = os.path.join(course_code, MERGED_FILENAME)
+	merger.write(merged_file_path)
+	merger.close()
 	progress(1, 1, status='merged '+course_code)
 	print('\n')

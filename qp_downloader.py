@@ -108,20 +108,20 @@ def main():
             sys.exit(1)
         
         # Download files for each course
-        for course_code in course_code:
-            print(f"\nProcessing course: {course_code}")
-            course_links = get_course_link(course_code, program_links)
+        for current_course in course_code:
+            print(f"\nProcessing course: {current_course}")
+            course_links = get_course_link(current_course, program_links)
             
             if course_links:
-                local_file_path = download_files(course_links, course_code)
+                local_file_path = download_files(course_links, current_course)
                 
                 # Merge files if requested
                 for val in merge_list:
-                    if re.match(course_code, val, re.IGNORECASE):
-                        merge(local_file_path, course_code)
+                    if re.match(current_course, val, re.IGNORECASE):
+                        merge(local_file_path, current_course)
                         break
             else:
-                print(f"No files found for course: {course_code}")
+                print(f"No files found for course: {current_course}")
         
         print("\n" + "="*60)
         print("Download process completed!")
