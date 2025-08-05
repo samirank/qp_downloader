@@ -34,9 +34,18 @@ from utils import get_range, get_file_year, get_file_month, print_error, sanitiz
 
 
 def get_html(url):
+	"""
+	Get HTML content from URL with proper error handling.
+	
+	Args:
+		url: URL to fetch HTML from
+		
+	Returns:
+		BeautifulSoup object or error code
+	"""
 	http = urllib3.PoolManager()
 	try:
-		response = http.request('GET', url, retries=False, timeout=10.0)
+		response = http.request('GET', url, retries=False, timeout=REQUEST_TIMEOUT)
 	except urllib3.exceptions.NewConnectionError:
 		return -1
 	except urllib3.exceptions.TimeoutError:
